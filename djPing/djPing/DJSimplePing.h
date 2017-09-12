@@ -152,7 +152,7 @@ typedef NS_ENUM(NSInteger, DJSimplePingAddressStyle) {
  *      is made, this will have the same value as the `hostAddress` property.
  */
 
-- (void)simplePing:(DJSimplePing *)pinger didStartWithAddress:(NSData *)address;
+- (void)dj_simplePing:(DJSimplePing *)pinger didStartWithAddress:(NSData *)address;
 
 /*! A SimplePing delegate callback, called if the object fails to start up.
  *  \details This is called shortly after you start the object to tell you that the 
@@ -165,7 +165,7 @@ typedef NS_ENUM(NSInteger, DJSimplePingAddressStyle) {
  *  \param error Describes the failure.
  */
     
-- (void)simplePing:(DJSimplePing *)pinger didFailWithError:(NSError *)error;
+- (void)dj_simplePing:(DJSimplePing *)pinger didFailWithError:(NSError *)error;
 
 /*! A SimplePing delegate callback, called when the object has successfully sent a ping packet. 
  *  \details Each call to `-sendPingWithData:` will result in either a 
@@ -180,7 +180,7 @@ typedef NS_ENUM(NSInteger, DJSimplePingAddressStyle) {
  *  \param sequenceNumber The ICMP sequence number of that packet.
  */
 
-- (void)simplePing:(DJSimplePing *)pinger didSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber;
+- (void)dj_simplePing:(DJSimplePing *)pinger didSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber;
 
 /*! A SimplePing delegate callback, called when the object fails to send a ping packet. 
  *  \details Each call to `-sendPingWithData:` will result in either a 
@@ -196,7 +196,7 @@ typedef NS_ENUM(NSInteger, DJSimplePingAddressStyle) {
  *  \param error Describes the failure.
  */
 
-- (void)simplePing:(DJSimplePing *)pinger didFailToSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber error:(NSError *)error;
+- (void)dj_simplePing:(DJSimplePing *)pinger didFailToSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber error:(NSError *)error;
 
 /*! A SimplePing delegate callback, called when the object receives a ping response.
  *  \details If the object receives an ping response that matches a ping request that it 
@@ -208,7 +208,7 @@ typedef NS_ENUM(NSInteger, DJSimplePingAddressStyle) {
  *  \param sequenceNumber The ICMP sequence number of that packet.
  */
 
-- (void)simplePing:(DJSimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber;
+- (void)dj_simplePing:(DJSimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber;
 
 /*! A SimplePing delegate callback, called when the object receives an unmatched ICMP message.
  *  \details If the object receives an ICMP message that does not match a ping request that it 
@@ -228,7 +228,7 @@ typedef NS_ENUM(NSInteger, DJSimplePingAddressStyle) {
  *      follows that in the ICMP message but does not include any IP-level headers.
  */
 
-- (void)simplePing:(DJSimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet;
+- (void)dj_simplePing:(DJSimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet;
 
 @end
 

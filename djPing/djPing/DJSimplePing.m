@@ -172,8 +172,8 @@ static uint16_t dj_in_cksum(const void *buffer, size_t bufferLen) {
     
     [self stop];
     strongDelegate = self.delegate;
-    if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(simplePing:didFailWithError:)] ) {
-        [strongDelegate simplePing:self didFailWithError:error];
+    if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(dj_simplePing:didFailWithError:)] ) {
+        [strongDelegate dj_simplePing:self didFailWithError:error];
     }
 }
 
@@ -292,8 +292,8 @@ static uint16_t dj_in_cksum(const void *buffer, size_t bufferLen) {
 
         // Complete success.  Tell the client.
 
-        if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(simplePing:didSendPacket:sequenceNumber:)] ) {
-            [strongDelegate simplePing:self didSendPacket:packet sequenceNumber:self.nextSequenceNumber];
+        if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(dj_simplePing:didSendPacket:sequenceNumber:)] ) {
+            [strongDelegate dj_simplePing:self didSendPacket:packet sequenceNumber:self.nextSequenceNumber];
         }
     } else {
         NSError *   error;
@@ -304,8 +304,8 @@ static uint16_t dj_in_cksum(const void *buffer, size_t bufferLen) {
             err = ENOBUFS;          // This is not a hugely descriptor error, alas.
         }
         error = [NSError errorWithDomain:NSPOSIXErrorDomain code:err userInfo:nil];
-        if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(simplePing:didFailToSendPacket:sequenceNumber:error:)] ) {
-            [strongDelegate simplePing:self didFailToSendPacket:packet sequenceNumber:self.nextSequenceNumber error:error];
+        if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(dj_simplePing:didFailToSendPacket:sequenceNumber:error:)] ) {
+            [strongDelegate dj_simplePing:self didFailToSendPacket:packet sequenceNumber:self.nextSequenceNumber error:error];
         }
     }
     
@@ -522,12 +522,12 @@ static uint16_t dj_in_cksum(const void *buffer, size_t bufferLen) {
 
         strongDelegate = self.delegate;
         if ( [self validatePingResponsePacket:packet sequenceNumber:&sequenceNumber] ) {
-            if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(simplePing:didReceivePingResponsePacket:sequenceNumber:)] ) {
-                [strongDelegate simplePing:self didReceivePingResponsePacket:packet sequenceNumber:sequenceNumber];
+            if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(dj_simplePing:didReceivePingResponsePacket:sequenceNumber:)] ) {
+                [strongDelegate dj_simplePing:self didReceivePingResponsePacket:packet sequenceNumber:sequenceNumber];
             }
         } else {
-            if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(simplePing:didReceiveUnexpectedPacket:)] ) {
-                [strongDelegate simplePing:self didReceiveUnexpectedPacket:packet];
+            if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(dj_simplePing:didReceiveUnexpectedPacket:)] ) {
+                [strongDelegate dj_simplePing:self didReceiveUnexpectedPacket:packet];
             }
         }
     } else {
@@ -635,8 +635,8 @@ static void SocketReadCallback(CFSocketRef s, CFSocketCallBackType type, CFDataR
         CFRelease(rls);
 
         strongDelegate = self.delegate;
-        if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(simplePing:didStartWithAddress:)] ) {
-            [strongDelegate simplePing:self didStartWithAddress:self.hostAddress];
+        if ( (strongDelegate != nil) && [strongDelegate respondsToSelector:@selector(dj_simplePing:didStartWithAddress:)] ) {
+            [strongDelegate dj_simplePing:self didStartWithAddress:self.hostAddress];
         }
     }
     assert(fd == -1);
