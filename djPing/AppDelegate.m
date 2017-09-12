@@ -19,7 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.action = [DJPingAction startWithHost:@"baidu.com"
-                   timeOutLimit:0.05f
+                   timeOutLimit:0.5f
                 stopWhenReached:NO
                        maxCount:15
                        feedback:^(DJPingItem *item) {
