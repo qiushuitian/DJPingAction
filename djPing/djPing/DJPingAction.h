@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 @class DJSimplePing;
+@class DJPingAction;
 
 
 @interface DJPingItem : NSObject
@@ -29,10 +30,9 @@ typedef void(^DJPingCompleteBlock)();
 
 +(DJPingAction *)startWithHost:(NSString *)host
                   timeOutLimit:(NSTimeInterval)timeOutLimit
+               stopWhenReached:(BOOL)stopWhenReached
                       maxCount:(NSTimeInterval)maxCount
                       feedback:(DJPingFeedbackBlock)feedback
                       complete:(DJPingCompleteBlock)complete;
-
-
 
 @end

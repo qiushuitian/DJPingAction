@@ -19,13 +19,17 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.action = [DJPingAction startWithHost:@"baidu.com"
-                   timeOutLimit:1.0f
-                       maxCount:3
+                   timeOutLimit:0.05f
+                stopWhenReached:NO
+                       maxCount:15
                        feedback:^(DJPingItem *item) {
         NSLog(@"AppDelegate ping %@",item);
     } complete:^{
+        
         NSLog(@"AppDelegate ping finished");
     }];
+    
+    
     
     return YES;
 }

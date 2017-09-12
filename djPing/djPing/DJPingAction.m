@@ -56,12 +56,12 @@
 
 typedef NS_ENUM(NSInteger, DJPingState) {
     DJPingStateIdle,
-    DJPingStateStartedSuccess,
-    DJPingStateStartedFailure,
-    DJPingStateSendDataSuccess,
-    DJPingStateSendDataFailure,
-    DJPingStateReceiveSuccess,
-    DJPingStateReceiveFailure
+    DJPingStateStartedSuccess,      //1
+    DJPingStateStartedFailure,      //2
+    DJPingStateSendDataSuccess,     //3
+    DJPingStateSendDataFailure,     //4
+    DJPingStateReceiveSuccess,      //5
+    DJPingStateReceiveFailure       //6
 };
 
 
@@ -80,6 +80,7 @@ typedef void(^DJPingTimeOutBlock)();
 @property(nonatomic) NSTimeInterval timeOutLimit;               // ping 的超时时间
 @property(nonatomic) NSInteger maxCount;                        // ping 的次数
 @property(nonatomic) NSTimeInterval durationTime;                   // 最多ping多久
+@property(nonatomic) BOOL stopWhenReached;                      //是否通了就不继续了
 
 @property(nonatomic) NSInteger currPingCount;
 @property(nonatomic) NSDate * sendDate;
@@ -90,6 +91,8 @@ typedef void(^DJPingTimeOutBlock)();
 
 @property(nonatomic) DJPingState pingState;
 
+@property(nonatomic, strong) NSMutableDictionary * timeDic;
+
 @end
 
 @implementation DJPingAction
@@ -98,24 +101,31 @@ typedef void(^DJPingTimeOutBlock)();
 
 +(DJPingAction *)startWithHost:(NSString *)host
                   timeOutLimit:(NSTimeInterval)timeOutLimit
+               stopWhenReached:(BOOL)stopWhenReached
                       maxCount:(NSTimeInterval)maxCount
                       feedback:(DJPingFeedbackBlock)feedback
                       complete:(DJPingCompleteBlock)complete{
     
     DJPingAction * pingAction = [DJPingAction new];
     pingAction.host = host;
+    pingAction.stopWhenReached = stopWhenReached;
     pingAction.maxCount = maxCount;
     pingAction.timeOutLimit = timeOutLimit;
+    pingAction.timeDic = [NSMutableDictionary dictionary];
     pingAction.simplePing = [[DJSimplePing alloc] initWithHostName:host];
     pingAction.simplePing.delegate = pingAction;
     
     pingAction.queue = dispatch_queue_create("com.sgv.sdk.pingDeteck", DISPATCH_QUEUE_CONCURRENT);
+//    pingAction.queue = dispatch_get_main_queue();
+
     
     pingAction.feedbackBlock = feedback;
     pingAction.completeBlock = complete;
 
-    
-    [pingAction changeState:DJPingStateIdle withItem:nil];
+    dispatch_async(pingAction.queue, ^{
+        [pingAction changeState:DJPingStateIdle withItem:nil];
+        [[NSRunLoop currentRunLoop] run];
+    });
     
     return pingAction;
 }
@@ -144,6 +154,8 @@ typedef void(^DJPingTimeOutBlock)();
             [self performSelector:@selector(pingTimeoutActionFired)
                        withObject:nil
                        afterDelay:self.timeOutLimit];
+            NSLog(@"timer start");
+
         }
             break;
         case DJPingStateSendDataFailure:{
@@ -167,35 +179,47 @@ typedef void(^DJPingTimeOutBlock)();
     [[self class] cancelPreviousPerformRequestsWithTarget:self
                                                  selector:@selector(pingTimeoutActionFired)
                                                    object:nil];
+    NSLog(@"timer cancel");
     
-    if (self.currPingCount < self.maxCount) {
-        // 没到次数，重试
-        if (self.feedbackBlock) {
-            self.feedbackBlock(item);
-        }
-        [self changeState:state withItem:item];
-    }else{
-        // 达到重试次数
+    if (self.feedbackBlock) {
+        self.feedbackBlock(item);
+    }
+    self.currPingCount ++;
+    
+    if (item.status == 1 && self.stopWhenReached) {
         if (self.completeBlock) {
             self.completeBlock();
             self.completeBlock = nil;
+            self.feedbackBlock = nil;
+        }
+    }else {
+        if (self.currPingCount < self.maxCount) {
+            // 没到次数，重试
+            [self changeState:state withItem:item];
+        }else{
+            // 达到重试次数
+            if (self.completeBlock) {
+                self.completeBlock();
+                self.completeBlock = nil;
+                self.feedbackBlock = nil;
+            }
         }
     }
-    self.currPingCount ++;
 
+    
 }
 
 
 - (void)pingTimeoutActionFired{
+    NSLog(@"timer timeout");
     DJPingItem * pingItem = [[DJPingItem alloc] init];
     pingItem.host = self.simplePing.hostName;
     pingItem.ICMPSequence = self.sequenceNumber;
     pingItem.timeCost = self.timeOutLimit;
     pingItem.status = 2;
     pingItem.timeToLive = 0;
-
-    [self finishCurrPingAndGoToState:DJPingStateReceiveFailure withItem:pingItem];
-
+    
+    [self changeState:DJPingStateReceiveFailure withItem:pingItem];
 }
 
 //---------------------------------------------------------------------------
@@ -222,9 +246,11 @@ typedef void(^DJPingTimeOutBlock)();
 
 
 - (void)dj_simplePing:(DJSimplePing *)pinger didSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber{
-    NSLog(@"sgv_simplePing didSendPacket sequenceNumber = %d", sequenceNumber);
 
     self.sendDate = [NSDate date];
+    [self.timeDic setObject:[NSDate date] forKey:@(sequenceNumber)];
+    NSLog(@"sgv_simplePing didSendPacket sequenceNumber = %d data=%f", sequenceNumber,[self.sendDate timeIntervalSince1970]);
+
     self.sequenceNumber = sequenceNumber;
     
     [self changeState:DJPingStateSendDataSuccess withItem:nil];
@@ -252,13 +278,21 @@ typedef void(^DJPingTimeOutBlock)();
     DJPingItem * pingItem = [[DJPingItem alloc] init];
     pingItem.host = self.simplePing.hostName;
     pingItem.ICMPSequence = self.sequenceNumber;
-    pingItem.timeCost = [[NSDate date] timeIntervalSinceDate:self.sendDate];;
+    NSDate * nowDate = [NSDate date];
+    NSDate * sendDate = [self.timeDic objectForKey:@(sequenceNumber)];
+    pingItem.timeCost = [nowDate timeIntervalSinceDate:sendDate];;
     
     pingItem.status = 1;
     pingItem.timeToLive = 0;
     pingItem.dataByteLenth = packet.length;
     
-    [self changeState:DJPingStateReceiveSuccess withItem:pingItem];
+
+    NSLog(@"sgv_simplePing didReceivePingResponsePacket sequenceNumber = %d pingItem = %@ data=%f sendDate=%f", sequenceNumber, pingItem,[nowDate timeIntervalSince1970],[sendDate timeIntervalSince1970]);
+
+    // 成功收到超时发出的包，则忽略
+    if (pinger.nextSequenceNumber == sequenceNumber + 1) {
+        [self changeState:DJPingStateReceiveSuccess withItem:pingItem];
+    }
     
 }
 
