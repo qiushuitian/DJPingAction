@@ -135,7 +135,7 @@ typedef void(^DJPingTimeOutBlock)();
 }
 
 -(void)changeState:(DJPingState)state withItem:(DJPingItem *)item{
-    NSLog(@"ping changeState state = %ld",state);
+    NSLog(@"ping changeState state = %i",state);
     switch (state) {
         case DJPingStateIdle:{
             [self.simplePing start];

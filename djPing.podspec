@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   		   ping host.
                    DESC
 
-  s.homepage     = "http://EXAMPLE/djPing"
+  s.homepage     = "https://github.com/qiushuitian"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "http://EXAMPLE/djPing.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/qiushuitian/djPing.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
