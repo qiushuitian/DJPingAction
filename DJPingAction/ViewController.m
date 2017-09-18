@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  DJPing
+//  DJPingAction
 //
 //  Created by jian deng on 08/09/2017.
 //  Copyright © 2017 jian deng. All rights reserved.

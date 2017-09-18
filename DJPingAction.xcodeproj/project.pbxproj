@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B6A8FEE51F627B3200FF076E /* DJPing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DJPing.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6A8FEE51F627B3200FF076E /* DJPingAction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DJPingAction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6A8FEE91F627B3200FF076E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B6A8FEEB1F627B3200FF076E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B6A8FEEC1F627B3200FF076E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -48,7 +48,7 @@
 		B6A8FEDC1F627B3200FF076E = {
 			isa = PBXGroup;
 			children = (
-				B6A8FEE71F627B3200FF076E /* DJPing */,
+				B6A8FEE71F627B3200FF076E /* DJPingAction */,
 				B6A8FEE61F627B3200FF076E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,15 +56,15 @@
 		B6A8FEE61F627B3200FF076E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B6A8FEE51F627B3200FF076E /* DJPing.app */,
+				B6A8FEE51F627B3200FF076E /* DJPingAction.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B6A8FEE71F627B3200FF076E /* DJPing */ = {
+		B6A8FEE71F627B3200FF076E /* DJPingAction */ = {
 			isa = PBXGroup;
 			children = (
-				B6A8FF021F62806100FF076E /* DJPing */,
+				B6A8FF021F62806100FF076E /* DJPingAction */,
 				B6A8FEEB1F627B3200FF076E /* AppDelegate.h */,
 				B6A8FEEC1F627B3200FF076E /* AppDelegate.m */,
 				B6A8FEEE1F627B3200FF076E /* ViewController.h */,
@@ -75,8 +75,7 @@
 				B6A8FEF91F627B3200FF076E /* Info.plist */,
 				B6A8FEE81F627B3200FF076E /* Supporting Files */,
 			);
-			name = DJPing;
-			path = djPing;
+			path = DJPingAction;
 			sourceTree = "<group>";
 		};
 		B6A8FEE81F627B3200FF076E /* Supporting Files */ = {
@@ -87,7 +86,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		B6A8FF021F62806100FF076E /* DJPing */ = {
+		B6A8FF021F62806100FF076E /* DJPingAction */ = {
 			isa = PBXGroup;
 			children = (
 				B6A8FF031F62806100FF076E /* DJPingAction.h */,
@@ -95,16 +94,15 @@
 				B6A8FF051F62806100FF076E /* DJSimplePing.h */,
 				B6A8FF061F62806100FF076E /* DJSimplePing.m */,
 			);
-			name = DJPing;
-			path = djPing;
+			path = DJPingAction;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B6A8FEE41F627B3200FF076E /* DJPing */ = {
+		B6A8FEE41F627B3200FF076E /* DJPingAction */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B6A8FEFC1F627B3200FF076E /* Build configuration list for PBXNativeTarget "DJPing" */;
+			buildConfigurationList = B6A8FEFC1F627B3200FF076E /* Build configuration list for PBXNativeTarget "DJPingAction" */;
 			buildPhases = (
 				B6A8FEE11F627B3200FF076E /* Sources */,
 				B6A8FEE21F627B3200FF076E /* Frameworks */,
@@ -114,9 +112,9 @@
 			);
 			dependencies = (
 			);
-			name = DJPing;
+			name = DJPingAction;
 			productName = djPing;
-			productReference = B6A8FEE51F627B3200FF076E /* DJPing.app */;
+			productReference = B6A8FEE51F627B3200FF076E /* DJPingAction.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -135,7 +133,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B6A8FEE01F627B3200FF076E /* Build configuration list for PBXProject "DJPing" */;
+			buildConfigurationList = B6A8FEE01F627B3200FF076E /* Build configuration list for PBXProject "DJPingAction" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -148,7 +146,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B6A8FEE41F627B3200FF076E /* DJPing */,
+				B6A8FEE41F627B3200FF076E /* DJPingAction */,
 			);
 		};
 /* End PBXProject section */
@@ -298,7 +296,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = T5CF3NJ5D2;
-				INFOPLIST_FILE = DJPing/Info.plist;
+				INFOPLIST_FILE = DJPingAction/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dengjian.tomato;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -312,7 +310,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = T5CF3NJ5D2;
-				INFOPLIST_FILE = DJPing/Info.plist;
+				INFOPLIST_FILE = DJPingAction/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dengjian.tomato;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -324,7 +322,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B6A8FEE01F627B3200FF076E /* Build configuration list for PBXProject "DJPing" */ = {
+		B6A8FEE01F627B3200FF076E /* Build configuration list for PBXProject "DJPingAction" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B6A8FEFA1F627B3200FF076E /* Debug */,
@@ -333,7 +331,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B6A8FEFC1F627B3200FF076E /* Build configuration list for PBXNativeTarget "DJPing" */ = {
+		B6A8FEFC1F627B3200FF076E /* Build configuration list for PBXNativeTarget "DJPingAction" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B6A8FEFD1F627B3200FF076E /* Debug */,
