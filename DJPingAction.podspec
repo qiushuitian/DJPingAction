@@ -15,8 +15,8 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "DJPing"
-  s.version      = "0.1.2"
+  s.name         = "DJPingAction"
+  s.version      = "0.1.0"
   s.summary      = "A ping tool for ping host."
 
   # This description is used to generate tags and improve search results.
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/qiushuitian/DJPing.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/qiushuitian/DJPingAction.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -91,7 +91,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "DJPing/DJPing/*.{h,m}"
+  s.source_files  = "DJPingAction/DJPingAction/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
