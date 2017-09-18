@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "DJPingAction"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "A ping tool for ping host."
 
   # This description is used to generate tags and improve search results.
