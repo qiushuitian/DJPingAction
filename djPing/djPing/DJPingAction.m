@@ -67,6 +67,8 @@ typedef NS_ENUM(NSInteger, DJPingState) {
 
 typedef void(^DJPingTimeOutBlock)();
 
+typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
+
 
 @interface DJPingAction () <DJSimplePingDelegate>
 
@@ -93,6 +95,8 @@ typedef void(^DJPingTimeOutBlock)();
 
 @property(nonatomic, strong) NSMutableDictionary * timeDic;
 
+@property(nonatomic, strong) DJPingAction * myself; //在完成之前,hold住自己
+
 @end
 
 @implementation DJPingAction
@@ -114,13 +118,14 @@ typedef void(^DJPingTimeOutBlock)();
     pingAction.timeDic = [NSMutableDictionary dictionary];
     pingAction.simplePing = [[DJSimplePing alloc] initWithHostName:host];
     pingAction.simplePing.delegate = pingAction;
+    pingAction.feedbackBlock = feedback;
+    if (complete) {
+        pingAction.completeBlock = complete;
+        pingAction.myself = pingAction;
+        
+    }
     
     pingAction.queue = dispatch_queue_create("com.sgv.sdk.pingDeteck", DISPATCH_QUEUE_CONCURRENT);
-//    pingAction.queue = dispatch_get_main_queue();
-
-    
-    pingAction.feedbackBlock = feedback;
-    pingAction.completeBlock = complete;
 
     dispatch_async(pingAction.queue, ^{
         [pingAction changeState:DJPingStateIdle withItem:nil];
@@ -130,9 +135,6 @@ typedef void(^DJPingTimeOutBlock)();
     return pingAction;
 }
 
--(void)retry{
-
-}
 
 -(void)changeState:(DJPingState)state withItem:(DJPingItem *)item{
     NSLog(@"ping changeState state = %@",@(state));
@@ -189,6 +191,7 @@ typedef void(^DJPingTimeOutBlock)();
     if (item.status == 1 && self.stopWhenReached) {
         if (self.completeBlock) {
             self.completeBlock();
+            self.myself = nil;
             self.completeBlock = nil;
             self.feedbackBlock = nil;
         }
@@ -200,6 +203,7 @@ typedef void(^DJPingTimeOutBlock)();
             // 达到重试次数
             if (self.completeBlock) {
                 self.completeBlock();
+                self.myself = nil;
                 self.completeBlock = nil;
                 self.feedbackBlock = nil;
             }

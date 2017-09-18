@@ -10,7 +10,6 @@
 #import "DJPingAction.h"
 @interface AppDelegate ()
 
-@property (nonatomic, strong) DJPingAction * action;
 @end
 
 @implementation AppDelegate
@@ -18,19 +17,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    self.action = [DJPingAction startWithHost:@"baidu.com"
-                   timeOutLimit:0.5f
-                stopWhenReached:NO
-                       maxCount:15
-                       feedback:^(DJPingItem *item) {
-        NSLog(@"AppDelegate ping %@",item);
-    } complete:^{
-        
-        NSLog(@"AppDelegate ping finished");
-    }];
-    
-    
-    
     return YES;
 }
 
