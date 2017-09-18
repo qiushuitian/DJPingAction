@@ -137,7 +137,7 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
 
 
 -(void)changeState:(DJPingState)state withItem:(DJPingItem *)item{
-    NSLog(@"ping changeState state = %@",@(state));
+    //NSLog(@"ping changeState state = %@",@(state));
     switch (state) {
         case DJPingStateIdle:{
             [self.simplePing start];
@@ -156,7 +156,7 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
             [self performSelector:@selector(pingTimeoutActionFired)
                        withObject:nil
                        afterDelay:self.timeOutLimit];
-            NSLog(@"timer start");
+            //NSLog(@"timer start");
 
         }
             break;
@@ -181,7 +181,7 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
     [[self class] cancelPreviousPerformRequestsWithTarget:self
                                                  selector:@selector(pingTimeoutActionFired)
                                                    object:nil];
-    NSLog(@"timer cancel");
+    //NSLog(@"timer cancel");
     
     if (self.feedbackBlock) {
         self.feedbackBlock(item);
@@ -215,7 +215,7 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
 
 
 - (void)pingTimeoutActionFired{
-    NSLog(@"timer timeout");
+    //NSLog(@"timer timeout");
     DJPingItem * pingItem = [[DJPingItem alloc] init];
     pingItem.host = self.simplePing.hostName;
     pingItem.ICMPSequence = self.sequenceNumber;
@@ -230,13 +230,13 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
 
 // Ping的回调
 - (void)dj_simplePing:(DJSimplePing *)pinger didStartWithAddress:(NSData *)address{
-    NSLog(@"sgv_simplePing didStartWithAddress");
+    //NSLog(@"sgv_simplePing didStartWithAddress");
     [self changeState:DJPingStateStartedSuccess withItem:nil];
     
 }
 
 - (void)dj_simplePing:(DJSimplePing *)pinger didFailWithError:(NSError *)error{
-    NSLog(@"sgv_simplePing didFailWithError error = %@", error);
+    //NSLog(@"sgv_simplePing didFailWithError error = %@", error);
     DJPingItem * pingItem = [[DJPingItem alloc] init];
     pingItem.host = self.simplePing.hostName;
     pingItem.ICMPSequence = self.simplePing.identifier;
@@ -253,7 +253,7 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
 
     self.sendDate = [NSDate date];
     [self.timeDic setObject:[NSDate date] forKey:@(sequenceNumber)];
-    NSLog(@"sgv_simplePing didSendPacket sequenceNumber = %d data=%f", sequenceNumber,[self.sendDate timeIntervalSince1970]);
+    //NSLog(@"sgv_simplePing didSendPacket sequenceNumber = %d data=%f", sequenceNumber,[self.sendDate timeIntervalSince1970]);
 
     self.sequenceNumber = sequenceNumber;
     
@@ -291,7 +291,7 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
     pingItem.dataByteLenth = packet.length;
     
 
-    NSLog(@"sgv_simplePing didReceivePingResponsePacket sequenceNumber = %d pingItem = %@ data=%f sendDate=%f", sequenceNumber, pingItem,[nowDate timeIntervalSince1970],[sendDate timeIntervalSince1970]);
+    //NSLog(@"sgv_simplePing didReceivePingResponsePacket sequenceNumber = %d pingItem = %@ data=%f sendDate=%f", sequenceNumber, pingItem,[nowDate timeIntervalSince1970],[sendDate timeIntervalSince1970]);
 
     // 成功收到超时发出的包，则忽略
     if (pinger.nextSequenceNumber == sequenceNumber + 1) {
