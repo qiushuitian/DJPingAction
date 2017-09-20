@@ -276,7 +276,7 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
     pingItem.status = 2;
     pingItem.timeToLive = 0;
     
-    [self.simplePing stop];
+//    [self.simplePing stop];
 //    [self changeState:DJPingStateIdle withItem:pingItem];
     [self changeState:DJPingStateReceiveFailure withItem:pingItem];
 }
