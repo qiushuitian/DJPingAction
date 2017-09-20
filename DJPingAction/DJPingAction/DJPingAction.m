@@ -97,11 +97,36 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
 
 @property(nonatomic, strong) DJPingAction * myself; //在完成之前,hold住自己
 
+@property(nonatomic, strong) NSPort * port;
+
 @end
 
 @implementation DJPingAction
 
 
++ (NSThread *)pingThread {
+    static NSThread *_networkRequestThread = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _networkRequestThread = [[NSThread alloc] initWithTarget:self selector:@selector(pingThreadEntryPoint:) object:nil];
+        [_networkRequestThread start];
+    });
+    return _networkRequestThread;
+}
+
++ (void)pingThreadEntryPoint:(id) object {
+    @autoreleasepool {
+        [[NSThread currentThread] setName:@"com.dengjian.sdk.pingDeteck"];
+        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+        [runLoop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+        [runLoop run];
+    }
+    
+}
+
+-(void)startPing{
+    [self changeState:DJPingStateIdle withItem:nil];
+}
 
 +(DJPingAction *)startWithHost:(NSString *)host
                   timeOutLimit:(NSTimeInterval)timeOutLimit
@@ -125,12 +150,8 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
         
     }
     
-    pingAction.queue = dispatch_queue_create("com.sgv.sdk.pingDeteck", DISPATCH_QUEUE_CONCURRENT);
-
-    dispatch_async(pingAction.queue, ^{
-        [pingAction changeState:DJPingStateIdle withItem:nil];
-        [[NSRunLoop currentRunLoop] run];
-    });
+    
+    [pingAction performSelector:@selector(startPing) onThread:[[self class] pingThread] withObject:nil waitUntilDone:NO];
     
     return pingAction;
 }
@@ -194,6 +215,13 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
             self.myself = nil;
             self.completeBlock = nil;
             self.feedbackBlock = nil;
+            
+//            [[NSRunLoop currentRunLoop] removePort:self.port forMode:NSDefaultRunLoopMode];
+//            self.port = nil;
+            
+        //    [NSRunLoop currentRunLoop] runm
+        //    [subRunLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            
         }
     }else {
         if (self.currPingCount < self.maxCount) {
@@ -206,6 +234,10 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
                 self.myself = nil;
                 self.completeBlock = nil;
                 self.feedbackBlock = nil;
+                
+//                [[NSRunLoop currentRunLoop] removePort:self.port forMode:NSDefaultRunLoopMode];
+//                [NSRunLoop currentRunLoop]
+//                self.port = nil;
             }
         }
     }

@@ -28,7 +28,7 @@
     [DJPingAction startWithHost:host
                    timeOutLimit:timOutLimit
                 stopWhenReached:NO
-                       maxCount:100
+                       maxCount:2
                        feedback:^(DJPingItem *item) {
         NSLog(@"ping Action item = %@",item);
     } complete:^{
