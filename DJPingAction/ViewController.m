@@ -24,7 +24,7 @@
 
 - (IBAction)clickPingButton:(id)sender {
     NSString * host = self.hostTextFiled.text;
-    NSTimeInterval timOutLimit = 5.0f;
+    NSTimeInterval timOutLimit = 0.5f;
     [DJPingAction startWithHost:host
                    timeOutLimit:timOutLimit
                 stopWhenReached:NO

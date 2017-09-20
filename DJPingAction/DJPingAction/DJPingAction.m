@@ -157,14 +157,35 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
 }
 
 
+- (void)pingStartTimeoutActionFired{
+    NSLog(@"sgv_simplePing timer timeout");
+    DJPingItem * pingItem = [[DJPingItem alloc] init];
+    pingItem.host = self.simplePing.hostName;
+    pingItem.ICMPSequence = self.sequenceNumber;
+    pingItem.timeCost = self.timeOutLimit;
+    pingItem.status = 3;
+    pingItem.timeToLive = 0;
+    
+    [self.simplePing stop];
+    [self changeState:DJPingStateStartedFailure withItem:pingItem];
+}
+
 -(void)changeState:(DJPingState)state withItem:(DJPingItem *)item{
     //NSLog(@"ping changeState state = %@",@(state));
     switch (state) {
         case DJPingStateIdle:{
             [self.simplePing start];
+            
+            [self performSelector:@selector(pingStartTimeoutActionFired)
+                       withObject:nil
+                       afterDelay:self.timeOutLimit];
         }
             break;
         case DJPingStateStartedSuccess:{
+            [[self class] cancelPreviousPerformRequestsWithTarget:self
+                                                         selector:@selector(pingStartTimeoutActionFired)
+                                                           object:nil];
+            
             [self.simplePing sendPingWithData:self.data];
         }
             break;
@@ -255,6 +276,8 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
     pingItem.status = 2;
     pingItem.timeToLive = 0;
     
+    [self.simplePing stop];
+//    [self changeState:DJPingStateIdle withItem:pingItem];
     [self changeState:DJPingStateReceiveFailure withItem:pingItem];
 }
 
