@@ -233,16 +233,9 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
     if (item.status == 1 && self.stopWhenReached) {
         if (self.completeBlock) {
             self.completeBlock();
-            self.myself = nil;
             self.completeBlock = nil;
             self.feedbackBlock = nil;
-            
-//            [[NSRunLoop currentRunLoop] removePort:self.port forMode:NSDefaultRunLoopMode];
-//            self.port = nil;
-            
-        //    [NSRunLoop currentRunLoop] runm
-        //    [subRunLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            
+            self.myself = nil;
         }
     }else {
         if (self.currPingCount < self.maxCount) {
@@ -252,13 +245,9 @@ typedef void(^DJPingResultBlockWrap)(DJPingCompleteBlock block);
             // 达到重试次数
             if (self.completeBlock) {
                 self.completeBlock();
-                self.myself = nil;
                 self.completeBlock = nil;
                 self.feedbackBlock = nil;
-                
-//                [[NSRunLoop currentRunLoop] removePort:self.port forMode:NSDefaultRunLoopMode];
-//                [NSRunLoop currentRunLoop]
-//                self.port = nil;
+                self.myself = nil;
             }
         }
     }
